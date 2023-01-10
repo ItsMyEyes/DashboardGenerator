@@ -1,0 +1,9 @@
+
+                $d = '
+                <form action="'.route('{{modelRoute}}.destroy',${{modelNameLowerCase}}->id).'" method="POST">
+                    <a class="btn btn-sm btn-primary " href="'.route('{{modelRoute}}.show',${{modelNameLowerCase}}->id).'"><i class="fa fa-fw fa-eye"></i> Show</a>
+                    <a class="btn btn-sm btn-success" href="'.route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id).'"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                    <input name="_token" value="'.csrf_token().'" type="hidden"/>
+                    <input name="_method" value="DELETE" type="hidden"/>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                </form>';

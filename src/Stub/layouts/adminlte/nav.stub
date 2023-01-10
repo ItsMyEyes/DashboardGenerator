@@ -1,0 +1,1 @@
+<li class="nav-item"> <a href="/" class="nav-link{{ \KiyoraDashboard\Models\General::IsActiveRoute('dashboard*') }}"> <i class="nav-icon fas fa-th"></i> <p> Dashboard </p> </a> </li>

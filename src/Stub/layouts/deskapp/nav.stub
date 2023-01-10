@@ -1,0 +1,2 @@
+<li> <a href="https://dropways.github.io/deskapp//" class="dropdown-toggle no-arrow"> <span class="micon bi bi-file-pdf"></span> <span class="mtext">Documentation</span> </a> </li>
+{{-- <li> <a href="/" class="{{ \KiyoraDashboard\Models\General::IsActiveRoute('dashboard*') }}"> <span class="micon bi bi-file-pdf"></span > <p> Dashboard </p> </a> </li> --}}

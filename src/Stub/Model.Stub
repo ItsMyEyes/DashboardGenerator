@@ -1,0 +1,33 @@
+<?php
+
+namespace {{modelNamespace}};
+
+use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+{{softDeletesNamespace}}
+/**
+ * Class {{modelName}}
+ {{properties}}
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
+class {{modelName}} extends Model implements Auditable
+{
+    {{softDeletes}}
+    static $rules = [{{rules}}
+    ];
+
+    protected $perPage = 20;
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [{{fillable}}];
+
+    protected $table = '{{table}}';
+
+{{relations}}
+
+}

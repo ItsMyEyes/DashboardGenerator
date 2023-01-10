@@ -1,0 +1,144 @@
+<?php
+
+namespace {{controllerNamespace}};
+
+use {{modelNamespace}}\{{modelName}};
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+
+/**
+ * Class {{modelName}}Controller
+ * @package KiyoraDashboard\Http\Controllers
+ */
+class {{modelName}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {   
+        return view('{{modelView}}.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        ${{modelNameLowerCase}} = new {{modelName}}();
+        return view('{{modelView}}.create', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ajax(Request $request)
+    {
+        ${{modelNameLowerCase}} = {{modelName}}::query();
+ 
+        return DataTables::of(${{modelNameLowerCase}})
+            ->addColumn('action', function(${{modelNameLowerCase}}) {
+                $d = '';
+                $e = false;
+                if (auth()->user()->can('show_{{modelRoute}}')) {
+                    $e = true;
+                    $d = '<a class="btn btn-sm btn-primary " href="'.route('{{modelRoute}}.show',${{modelNameLowerCase}}->id).'"><i class="fa fa-fw fa-eye"></i> Show</a>';
+                }
+                if (auth()->user()->can('edit_{{modelRoute}}')) {
+                    $e = true;
+                    $d .= '<a class="btn btn-sm btn-success" href="'.route('{{modelRoute}}.edit',${{modelNameLowerCase}}->id).'"><i class="fa fa-fw fa-edit"></i> Edit</a>';
+                }
+                if (auth()->user()->can('delete_{{modelRoute}}')) {
+                    $e = true;
+                    $d .= '<form action="'.route('{{modelRoute}}.destroy',${{modelNameLowerCase}}->id).'" method="POST"><input name="_token" value="'.csrf_token().'" type="hidden"/>
+                    <input name="_method" value="DELETE" type="hidden"/>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button></form>';
+                }
+                if (!$e) {
+                    return '<a class="btn btn-sm btn-danger"><i class="fa fa-fw fa-eye"></i> No Action</a>';
+                }
+                return $d;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        request()->validate({{modelName}}::$rules);
+
+        ${{modelNameLowerCase}} = {{modelName}}::create($request->all());
+
+        return redirect()->route('{{modelRoute}}.index')
+            ->with('success', '{{modelName}} created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+
+        return view('{{modelView}}.show', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        ${{modelNameLowerCase}} = {{modelName}}::find($id);
+
+        return view('{{modelView}}.edit', compact('{{modelNameLowerCase}}'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  {{modelName}} ${{modelNameLowerCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, {{modelName}} ${{modelNameLowerCase}})
+    {
+        request()->validate({{modelName}}::$rules);
+
+        ${{modelNameLowerCase}}->update($request->all());
+
+        return redirect()->route('{{modelRoute}}.index')
+            ->with('success', '{{modelName}} updated successfully');
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy($id)
+    {
+        ${{modelNameLowerCase}} = {{modelName}}::find($id)->delete();
+
+        return redirect()->route('{{modelRoute}}.index')
+            ->with('success', '{{modelName}} deleted successfully');
+    }
+}
